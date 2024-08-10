@@ -1,0 +1,59 @@
+/* src/Components/NavBar.css */
+
+nav {
+    background-color: #f8f9fa; /* Light background color for the navbar */
+    border-bottom: 1px solid #ddd; /* Light border at the bottom */
+    padding: 15px 30px; /* Increased padding for better spacing */
+    display: flex;
+    justify-content: space-between; /* Space between items */
+    align-items: center; /* Center items vertically */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+  }
+  
+  nav a {
+    text-decoration: none; /* Remove underline from links */
+    color: #007bff; /* Primary color for links */
+    margin: 0 15px; /* Increased margin for spacing */
+    font-size: 16px; /* Font size for readability */
+    font-weight: 600; /* Bolder font weight for emphasis */
+    transition: color 0.3s, transform 0.3s; /* Smooth transition effects */
+  }
+  
+  nav a:hover {
+    text-decoration: none; /* Underline effect on hover */
+    color: #050a0f; /* Darker color on hover for better contrast */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+  }
+  
+  nav button {
+    background-color: #dc3545; /* Red background color */
+    border: none; /* Remove border */
+    color: white; /* White text color */
+    padding: 8px 16px; /* Increased padding for button size */
+    font-size: 16px; /* Font size for button text */
+    cursor: pointer; /* Pointer cursor on hover */
+    border-radius: 4px; /* Rounded corners for button */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition effects */
+  }
+  
+  nav button:hover {
+    background-color: #c82333; /* Darker red on hover */
+    transform: scale(1.05); /* Slight zoom effect on hover */
+  }
+  
+  nav .logo {
+    font-size: 24px; /* Larger font size for logo */
+    font-weight: bold; /* Bold font weight */
+    color: #007bff; /* Primary color for logo */
+  }
+  
+  nav .links {
+    display: flex;
+    align-items: center;
+  }
+  
+  nav .auth {
+    display: flex;
+    align-items: center;
+  }
+  
