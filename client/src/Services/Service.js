@@ -26,6 +26,8 @@ export const login = async (username, password) => {
       method: "POST",
       data: { username, password },
     });
+    console.log(response,'responseresponseresponse');
+    
     return response;
   } catch (error) {
     return handleError(error, "Login failed");

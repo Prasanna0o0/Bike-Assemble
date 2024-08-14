@@ -1,6 +1,6 @@
 const sql = require("mssql");
 const jwt = require("jsonwebtoken");
-const { decryptRequest } = require("../Auth/middleware");
+const { decryptRequest,encryptResponse } = require("../Auth/middleware");
 
 
 // Sample bike assembly times
@@ -36,7 +36,9 @@ const assembleBike = async (req, res) => {
         "INSERT INTO assemblies (employee_id, bike_type, assembly_time, assembly_date) VALUES (@employeeId, @bikeType, @assemblyTime, CAST(GETDATE() AS DATE))"
       );
 
-    res.json({ message: "Bike assembled successfully!" });
+    // res.json({ message: "Bike assembled successfully!" });
+    const encryptedData = encryptResponse({ message: "Bike assembled successfully!" });
+    res.json(encryptedData);
   } catch (err) {
     res.status(500).send(err.message);
   }

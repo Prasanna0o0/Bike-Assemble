@@ -1,6 +1,6 @@
 const sql = require("mssql");
 const jwt = require("jsonwebtoken");
-const { decryptRequest } = require("../Auth/middleware");
+const { decryptRequest,encryptResponse } = require("../Auth/middleware");
 
 // Admin dashboard controller
 const getDashboard = async (req, res) => {
@@ -17,8 +17,9 @@ const getDashboard = async (req, res) => {
       .query(
         "SELECT bike_type, COUNT(*) AS count FROM assemblies WHERE assembly_date BETWEEN @fromDate AND @toDate GROUP BY bike_type"
       );
-
-    res.json(result.recordset);
+      
+      const encryptedData = encryptResponse(result.recordset);
+    res.json(encryptedData);
   } catch (err) {
     res.status(500).send(err.message);
   }

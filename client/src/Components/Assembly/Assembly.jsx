@@ -5,12 +5,14 @@ import './Assembly.css';
 const AssembleBike = () => {
   const [bikeType, setBikeType] = useState('');
   const [message, setMessage] = useState('');
-  const employeeId = 1; // For simplicity, assuming a logged-in employee ID
+  const user = sessionStorage.getItem('user');
+  const parsedUser = user ? JSON.parse(user) : null;
+  
 
   const handleAssemble = async (e) => {
     e.preventDefault();
     try {
-      const data = await assembleBike(employeeId, bikeType);
+      const data = await assembleBike(parsedUser.id, bikeType);
       setMessage(data.message);
     } catch (err) {
       setMessage(err.message);

@@ -17,7 +17,8 @@ const Login = () => {
       if (token && user.role) {
         sessionStorage.setItem('token', token);
         sessionStorage.setItem('role', user.role);
-        sessionStorage.setItem('user', user);
+        sessionStorage.setItem('user', JSON.stringify(user));
+        
 
         // Redirect based on user role
         if (user.role === 'admin') {

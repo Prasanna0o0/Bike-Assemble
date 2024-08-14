@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { encryptRequest } from './Crypto';
+import { encryptRequest,decryptResponse } from './Crypto';
 
 // Base URL for API
 const BASE_URL = 'http://localhost:5000/api';
@@ -13,6 +13,7 @@ const client = async (endpoint, { method = 'GET', data, params } = {}) => {
   const encryptedData = encryptRequest(data);
 
 
+
   try {
     const response = await axios({
       url: `${BASE_URL}${endpoint}`,
@@ -21,8 +22,10 @@ const client = async (endpoint, { method = 'GET', data, params } = {}) => {
       data:{encryptedData},
       params,
     });
-
-    return response.data;
+    
+    let result = await decryptResponse(response.data)
+    // return response.data;
+    return result;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'An error occurred');
   }
