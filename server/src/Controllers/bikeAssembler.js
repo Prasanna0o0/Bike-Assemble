@@ -1,5 +1,6 @@
 const sql = require("mssql");
 const jwt = require("jsonwebtoken");
+const { decryptRequest } = require("../Auth/middleware");
 
 
 // Sample bike assembly times
@@ -11,7 +12,9 @@ const bikeTimes = {
 
 // Bike assembly controller
 const assembleBike = async (req, res) => {
-  const { employeeId, bikeType } = req.body;
+  const decryptedData = decryptRequest(req.body.encryptedData);
+  console.log(decryptedData);
+  const { employeeId, bikeType } = decryptedData;
   const assemblyTimeString = bikeTimes[bikeType];
 
   try {

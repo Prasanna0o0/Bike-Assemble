@@ -1,9 +1,12 @@
 const sql = require("mssql");
 const jwt = require("jsonwebtoken");
+const { decryptRequest } = require("../Auth/middleware");
 
 // Admin dashboard controller
 const getDashboard = async (req, res) => {
-  const { fromDate, toDate } = req.body;
+  const decryptedData = decryptRequest(req.body.encryptedData);
+  console.log(decryptedData);
+  const { fromDate, toDate } = decryptedData;
 
   try {
     const pool = await req.app.get("poolPromise");

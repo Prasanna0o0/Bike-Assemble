@@ -1,43 +1,15 @@
 const sql = require("mssql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { decryptRequest } = require("../Auth/middleware");
 
 // JWT secret key
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
-// Employee login controller
-// const login = async (req, res) => {
-//   const { username, password } = req.body;
-//   try {
-//     const pool = await req.app.get("poolPromise");
-//     const result = await pool
-//       .request()
-//       .input("username", sql.VarChar, username)
-//       .input("password", sql.VarChar, password)
-//       .query(
-//         "SELECT * FROM employees WHERE username = @username AND password = @password"
-//       );
-
-//     if (result.recordset.length > 0) {
-//       const user = result.recordset[0];
-//       const Authtoken = jwt.sign({ userId: user.id }, JWT_SECRET, {
-//         expiresIn: "24h",
-//       });
-//     //   res.json({ token });
-//       res.json({
-//         token: Authtoken,
-//         role: "admin", // or "user"
-//       });
-//     } else {
-//       res.status(401).json({ message: "Invalid credentials" });
-//     }
-//   } catch (err) {
-//     res.status(500).send(err.message);
-//   }
-// };
-
 const registerUser = async (req, res) => {
-  const { name, username, password, role } = req.body;
+  const decryptedData = decryptRequest(req.body.encryptedData);
+  console.log(decryptedData);
+  const { name, username, password, role } = decryptedData;
 
   try {
     const salt = await bcrypt.genSalt(10);
@@ -61,7 +33,10 @@ const registerUser = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { username, password } = req.body;
+  const decryptedData = decryptRequest(req.body.encryptedData);
+  console.log(decryptedData);
+
+  const { username, password } = decryptedData;
 
   try {
     const pool = await req.app.get("poolPromise");
@@ -78,7 +53,7 @@ const login = async (req, res) => {
       if (isMatch) {
         const payload = {
           userId: user.id,
-          role: user.role, 
+          role: user.role,
         };
 
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
@@ -104,7 +79,10 @@ const login = async (req, res) => {
 
 // Employee production controller
 const getEmployeeProduction = async (req, res) => {
-  const { date } = req.body;
+
+  const decryptedData = decryptRequest(req.body.encryptedData);
+  console.log(decryptedData);
+  const { date } = decryptedData;
 
   try {
     const pool = await req.app.get("poolPromise");
