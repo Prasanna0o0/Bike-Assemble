@@ -11,7 +11,7 @@ const NavBar = () => {
   const user = sessionStorage.getItem("user");
   const parsedUser = user ? JSON.parse(user) : null;
 
-  console.log(parsedUser, 'useruseruser');
+  console.log(parsedUser, "useruseruser");
 
   const handleLogout = () => {
     sessionStorage.removeItem("token");
@@ -24,9 +24,11 @@ const NavBar = () => {
     <nav>
       <div>
         <Link to="/assemble">Bike Assemble</Link>
+
+        {token && role ? "" : <Link to="/">Signin</Link>}
         {token && role === "admin" && <Link to="/dashboard">Dashboard</Link>}
         {/* Display the username if available */}
-        <h4>{parsedUser?.username}</h4>
+        <h4>User : {parsedUser?.username}</h4>
       </div>
       <div>
         {token ? (

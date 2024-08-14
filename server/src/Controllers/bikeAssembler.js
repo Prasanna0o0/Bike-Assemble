@@ -1,6 +1,6 @@
 const sql = require("mssql");
 const jwt = require("jsonwebtoken");
-const { decryptRequest,encryptResponse } = require("../Auth/middleware");
+const { decryptRequest,encryptResponse } = require("../Auth/Crypto");
 
 
 // Sample bike assembly times

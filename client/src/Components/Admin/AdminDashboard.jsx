@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { fetchDashboardData, fetchEmployeeData } from "../../Services/Service";
-
+import "./AdminDashboard.css";
 const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState([]);
   const [employeeData, setEmployeeData] = useState([]);
@@ -31,8 +31,8 @@ const AdminDashboard = () => {
       <h2>Admin Dashboard</h2>
 
       <h3>Filter Assembled Bikes</h3>
-      <input type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
-      <input type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
+      <input className="input-css" type="date" value={fromDate} onChange={(e) => setFromDate(e.target.value)} />
+      <input className="input-css" type="date" value={toDate} onChange={(e) => setToDate(e.target.value)} />
       <button onClick={() => fetchDashboardData(fromDate, toDate).then(data => setDashboardData(data)).catch(err => console.error(err))}>Filter</button>
 
       <h3>Number of Bikes Assembled</h3>
@@ -46,7 +46,7 @@ const AdminDashboard = () => {
       </BarChart>
 
       <h3>Employee Production</h3>
-      <input type="date" value={date} onChange={(e) => handleEmployeeProduction(e.target.value)} />
+      <input className="input-css" type="date" value={date} onChange={(e) => handleEmployeeProduction(e.target.value)} />
       <BarChart width={600} height={300} data={employeeData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />

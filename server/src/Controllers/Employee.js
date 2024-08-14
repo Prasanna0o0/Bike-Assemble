@@ -1,7 +1,7 @@
 const sql = require("mssql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { decryptRequest ,encryptResponse} = require("../Auth/middleware");
+const { decryptRequest ,encryptResponse} = require("../Auth/Crypto");
 
 // JWT secret key
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
@@ -26,7 +26,6 @@ const registerUser = async (req, res) => {
         "INSERT INTO employees (name, username, password,role) VALUES (@name, @username, @password, @role)"
       );
 
-    // res.status(201).json({ message: "User registered successfully" });
     const encryptedData = encryptResponse({ message: "User registered successfully" });
     res.json(encryptedData);
   } catch (err) {
@@ -60,14 +59,6 @@ const login = async (req, res) => {
 
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "24h" });
 
-        // res.json({
-        //   token,
-        //   user: {
-        //     id: user.id,
-        //     username: user.username,
-        //     role: user.role,
-        //   }, // Include user details
-        // });
 
         const encryptedData = encryptResponse({
           token,
@@ -82,10 +73,10 @@ const login = async (req, res) => {
         res.status(200).json(encryptedData);
 
       } else {
-        res.status(401).json({ message: "Invalid credentials" });
+        res.status(401).json({ message: "Invalid credential" });
       }
     } else {
-      res.status(401).json({ message: "Invalid credentials" });
+      res.status(401).json({ message: "Invalid credential" });
     }
   } catch (err) {
     res.status(500).send(err.message);

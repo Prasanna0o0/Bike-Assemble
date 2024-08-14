@@ -11,6 +11,9 @@ const getAuthToken = () => sessionStorage.getItem('token');
 const client = async (endpoint, { method = 'GET', data, params } = {}) => {
   const token = getAuthToken();
   const encryptedData = encryptRequest(data);
+  const encryptedToken = encryptRequest(token);
+
+
 
 
 
@@ -18,7 +21,7 @@ const client = async (endpoint, { method = 'GET', data, params } = {}) => {
     const response = await axios({
       url: `${BASE_URL}${endpoint}`,
       method,
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      headers: token ? { Authorization: `Bearer ${encryptedToken}` } : {},
       data:{encryptedData},
       params,
     });

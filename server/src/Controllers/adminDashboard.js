@@ -1,6 +1,6 @@
 const sql = require("mssql");
 const jwt = require("jsonwebtoken");
-const { decryptRequest,encryptResponse } = require("../Auth/middleware");
+const { decryptRequest,encryptResponse } = require("../Auth/Crypto");
 
 // Admin dashboard controller
 const getDashboard = async (req, res) => {
