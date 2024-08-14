@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 // Admin dashboard controller
 const getDashboard = async (req, res) => {
-  const { fromDate, toDate } = req.query;
+  const { fromDate, toDate } = req.body;
 
   try {
     const pool = await req.app.get("poolPromise");

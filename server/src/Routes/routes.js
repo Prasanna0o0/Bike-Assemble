@@ -13,7 +13,7 @@ router.post("/login", login);
 
 // Protected routes (require authentication)
 router.post("/assemble", authenticateToken, assembleBike);
-router.get("/dashboard", authenticateToken, getDashboard);
-router.get("/employee-production", authenticateToken, getEmployeeProduction);
+router.post("/dashboard", authenticateToken, getDashboard);
+router.post("/employee-production", authenticateToken, getEmployeeProduction);
 
 module.exports = router;

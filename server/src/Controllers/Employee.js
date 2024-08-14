@@ -104,7 +104,7 @@ const login = async (req, res) => {
 
 // Employee production controller
 const getEmployeeProduction = async (req, res) => {
-  const { date } = req.query;
+  const { date } = req.body;
 
   try {
     const pool = await req.app.get("poolPromise");
