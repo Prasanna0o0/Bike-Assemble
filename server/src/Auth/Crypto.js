@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-const JWT_SECRET = "your_jwt_secret";
 const CryptoJS = require("crypto-js");
-const secretKey = 'my-secret-key';
+const secretKey = process.env.SECRET_KEY;
 
 // Encryption Function
 const encryptResponse = (data) => {
