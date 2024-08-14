@@ -8,7 +8,6 @@ const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
 const registerUser = async (req, res) => {
   const decryptedData = decryptRequest(req.body.encryptedData);
-  console.log(decryptedData);
   const { name, username, password, role } = decryptedData;
 
   try {
@@ -35,7 +34,6 @@ const registerUser = async (req, res) => {
 
 const login = async (req, res) => {
   const decryptedData = decryptRequest(req.body.encryptedData);
-  console.log(decryptedData);
 
   const { username, password } = decryptedData;
 
@@ -87,7 +85,6 @@ const login = async (req, res) => {
 const getEmployeeProduction = async (req, res) => {
 
   const decryptedData = decryptRequest(req.body.encryptedData);
-  console.log(decryptedData);
   const { date } = decryptedData;
 
   try {

@@ -13,7 +13,7 @@ const bikeTimes = {
 // Bike assembly controller
 const assembleBike = async (req, res) => {
   const decryptedData = decryptRequest(req.body.encryptedData);
-  console.log(decryptedData);
+  
   const { employeeId, bikeType } = decryptedData;
   const assemblyTimeString = bikeTimes[bikeType];
 

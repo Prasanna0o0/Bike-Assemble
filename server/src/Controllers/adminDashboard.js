@@ -5,7 +5,6 @@ const { decryptRequest,encryptResponse } = require("../Auth/Crypto");
 // Admin dashboard controller
 const getDashboard = async (req, res) => {
   const decryptedData = decryptRequest(req.body.encryptedData);
-  console.log(decryptedData);
   const { fromDate, toDate } = decryptedData;
 
   try {

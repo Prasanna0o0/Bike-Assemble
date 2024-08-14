@@ -4,6 +4,7 @@ import "./Navbar.css";
 
 const NavBar = () => {
   const navigate = useNavigate();
+    // Retrieve and parse the Token and role object
   const token = sessionStorage.getItem("token");
   const role = sessionStorage.getItem("role");
 
@@ -11,7 +12,6 @@ const NavBar = () => {
   const user = sessionStorage.getItem("user");
   const parsedUser = user ? JSON.parse(user) : null;
 
-  console.log(parsedUser, "useruseruser");
 
   const handleLogout = () => {
     sessionStorage.removeItem("token");
@@ -23,9 +23,9 @@ const NavBar = () => {
   return (
     <nav>
       <div>
-        <Link to="/assemble">Bike Assemble</Link>
 
-        {token && role ? "" : <Link to="/">Signin</Link>}
+        {token && parsedUser?.id ? "" : <Link to="/">Signin</Link>}
+        {token && role ? <Link to="/assemble">Bike Assemble</Link> : ""}
         {token && role === "admin" && <Link to="/dashboard">Dashboard</Link>}
         {/* Display the username if available */}
         {parsedUser?.username ? <h4>User : {parsedUser?.username}</h4> : " "}
