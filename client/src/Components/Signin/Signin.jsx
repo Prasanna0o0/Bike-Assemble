@@ -4,85 +4,88 @@ import { useNavigate } from "react-router-dom";
 import "./Signin.css"; // Import the CSS file for styling
 
 const Signin = () => {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("user"); // Default to 'user'
+  const [formData, setFormData] = useState({
+    name: "",
+    username: "",
+    password: "",
+    role: "user", // Default to 'user'
+  });
+
+  const [formErrors, setFormErrors] = useState({
+    nameError: "",
+    usernameError: "",
+    passwordError: "",
+    roleError: "",
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
 
   // Validation functions
-  const validateName = (name) => {
-    if (!name) return "Name is required";
-    return "";
-  };
-
+  const validateName = (name) => (!name ? "Name is required" : "");
   const validateUsername = (username) => {
-    if (!username) return "Please Enter your (Email)";
+    if (!username) return "Please enter your email";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(username)) return "Invalid email format";
-    return "";
+    return !emailRegex.test(username) ? "Invalid email format" : "";
   };
-
   const validatePassword = (password) => {
-    if (!password) return "Please Enter your Password";
-    if (password.length < 6) return "Password must be at least 6 characters long";
-    return "";
+    if (!password) return "Please enter your password";
+    return password.length < 6
+      ? "Password must be at least 6 characters long"
+      : "";
+  };
+  // handle onchange input
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    // Validate individual field
+    let error = "";
+    if (name === "name") error = validateName(value);
+    if (name === "username") error = validateUsername(value);
+    if (name === "password") error = validatePassword(value);
+
+    setFormErrors((prevErrors) => ({
+      ...prevErrors,
+      [`${name}Error`]: error,
+    }));
   };
 
-  // Handle changes in input fields
-  const handleNameChange = (e) => {
-    const value = e.target.value;
-    setName(value);
-    const error = validateName(value);
-    setFormErrors((prevErrors) => ({ ...prevErrors, name: error }));
-  };
-
-  const handleUsernameChange = (e) => {
-    const value = e.target.value;
-    setUsername(value);
-    const error = validateUsername(value);
-    setFormErrors((prevErrors) => ({ ...prevErrors, username: error }));
-  };
-
-  const handlePasswordChange = (e) => {
-    const value = e.target.value;
-    setPassword(value);
-    const error = validatePassword(value);
-    setFormErrors((prevErrors) => ({ ...prevErrors, password: error }));
-  };
-
+  //handle submit
   const handleRegister = async (e) => {
     e.preventDefault();
-    // Final validation before submitting
-    const errors = {
-      name: validateName(name),
-      username: validateUsername(username),
-      password: validatePassword(password),
-    };
-    setFormErrors(errors);
 
-    if (Object.values(errors).some(error => error)) {
-      setMessage("");
+    // Validate all fields before submission
+    const nameError = validateName(formData.name);
+    const usernameError = validateUsername(formData.username);
+    const passwordError = validatePassword(formData.password);
+
+    setFormErrors({
+      nameError,
+      usernameError,
+      passwordError,
+      roleError: "", // Assuming no specific role error
+    });
+
+    if (nameError || usernameError || passwordError) {
+      setMessage(""); // Clear message if there are errors
       return;
     }
 
     try {
-      const userData = { name, username, password, role };
-      const response = await registerUser(userData);
-
+      const response = await registerUser(formData);
       if (response && response.message) {
         setMessage(response.message);
-        setTimeout(() => {
-          navigate("/login");
-        }, 2000);
+        setTimeout(() => navigate("/login"), 3000); // Redirect after 2 seconds
       }
       setError("");
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "An unexpected error occurred");
       setMessage("");
     }
   };
@@ -94,31 +97,38 @@ const Signin = () => {
         <div>
           <input
             type="text"
+            name="name"
             placeholder="Name"
-            value={name}
-            onChange={handleNameChange}
+            value={formData.name}
+            onChange={handleInputChange}
             required
           />
-          {formErrors.name && <span className="error-message">{formErrors.name}</span>}
+          {formErrors.nameError && (
+            <span className="error-message">{formErrors.nameError}</span>
+          )}
         </div>
 
         <div>
           <input
             type="text"
+            name="username"
             placeholder="Username (Email)"
-            value={username}
-            onChange={handleUsernameChange}
+            value={formData.username}
+            onChange={handleInputChange}
             required
           />
-          {formErrors.username && <span className="error-message">{formErrors.username}</span>}
+          {formErrors.usernameError && (
+            <span className="error-message">{formErrors.usernameError}</span>
+          )}
         </div>
 
         <div className="password-field">
           <input
             type={showPassword ? "text" : "password"}
+            name="password"
             placeholder="Password"
-            value={password}
-            onChange={handlePasswordChange}
+            value={formData.password}
+            onChange={handleInputChange}
             required
           />
           <button
@@ -128,22 +138,26 @@ const Signin = () => {
           >
             {showPassword ? "Hide" : "Show"}
           </button>
-          {formErrors.password && <span className="error-message">{formErrors.password}</span>}
+          {formErrors.passwordError && (
+            <span className="error-message">{formErrors.passwordError}</span>
+          )}
         </div>
 
         <div>
           <input
             type="radio"
+            name="role"
             value="admin"
-            checked={role === "admin"}
-            onChange={(e) => setRole(e.target.value)}
+            checked={formData.role === "admin"}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
           />
           <label className="labelsradio1">Admin</label>
           <input
             type="radio"
+            name="role"
             value="user"
-            checked={role === "user"}
-            onChange={(e) => setRole(e.target.value)}
+            checked={formData.role === "user"}
+            onChange={(e) => setFormData({ ...formData, role: e.target.value })}
           />
           <label className="labelsradio2">User</label>
         </div>

@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import { assembleBike } from '../../Services/Service'; // Import the service function
 import './Assembly.css';
 
+// AssembleBike component
 const AssembleBike = () => {
+
+  //Store selected bike type and message
   const [bikeType, setBikeType] = useState('');
   const [message, setMessage] = useState('');
+
+  // Fetch user from session 
   const user = sessionStorage.getItem('user');
   const parsedUser = user ? JSON.parse(user) : null;
   
 
+  // Handle form submission to assemble a bike
   const handleAssemble = async (e) => {
     e.preventDefault();
     try {

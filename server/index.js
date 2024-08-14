@@ -14,7 +14,7 @@ const config = {
   user: process.env.DB_USER || 'sa',
   password: process.env.DB_PASSWORD || 'admin@123',
   server: process.env.DB_HOST || 'localhost',
-  database: process.env.DB_NAME || 'bike_assembly_db',
+  database: process.env.DB_NAME || 'bike_assembly',
   options: {
     encrypt: true,
     enableArithAbort: true,

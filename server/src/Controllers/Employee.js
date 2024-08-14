@@ -6,15 +6,55 @@ const { decryptRequest ,encryptResponse} = require("../Auth/Crypto");
 // JWT secret key
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
+// const registerUser = async (req, res) => {
+//   const decryptedData = decryptRequest(req.body.encryptedData);
+//   const { name, username, password, role } = decryptedData;
+
+//   try {
+//     const salt = await bcrypt.genSalt(10);
+//     const hashedPassword = await bcrypt.hash(password, salt);
+
+//     const pool = await req.app.get("poolPromise");
+//     await pool
+//       .request()
+//       .input("name", sql.VarChar, name)
+//       .input("username", sql.VarChar, username)
+//       .input("password", sql.VarChar, hashedPassword)
+//       .input("role", sql.VarChar, role)
+//       .query(
+//         "INSERT INTO employees (name, username, password,role) VALUES (@name, @username, @password, @role)"
+//       );
+
+//     const encryptedData = encryptResponse({ message: "User registered successfully" });
+//     res.status(200).json(encryptedData);
+//   } catch (err) {
+//     res.status(500).send(err.message);
+//   }
+// };
+
 const registerUser = async (req, res) => {
   const decryptedData = decryptRequest(req.body.encryptedData);
   const { name, username, password, role } = decryptedData;
 
   try {
+    const pool = await req.app.get("poolPromise");
+
+    // Check if the username already exists
+    const existingUser = await pool
+      .request()
+      .input("username", sql.VarChar, username)
+      .query("SELECT * FROM employees WHERE username = @username");
+
+    if (existingUser.recordset.length > 0) {
+      // User already exists
+      const encryptedData = encryptResponse({ message: "Already have an account with this username" });
+      return res.status(200).json(encryptedData);
+    }
+
+    // Proceed to hash the password and insert the new user
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const pool = await req.app.get("poolPromise");
     await pool
       .request()
       .input("name", sql.VarChar, name)
@@ -22,11 +62,11 @@ const registerUser = async (req, res) => {
       .input("password", sql.VarChar, hashedPassword)
       .input("role", sql.VarChar, role)
       .query(
-        "INSERT INTO employees (name, username, password,role) VALUES (@name, @username, @password, @role)"
+        "INSERT INTO employees (name, username, password, role) VALUES (@name, @username, @password, @role)"
       );
 
     const encryptedData = encryptResponse({ message: "User registered successfully" });
-    res.json(encryptedData);
+    res.status(200).json(encryptedData);
   } catch (err) {
     res.status(500).send(err.message);
   }

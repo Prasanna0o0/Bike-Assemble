@@ -13,6 +13,7 @@ const NavBar = () => {
   const parsedUser = user ? JSON.parse(user) : null;
 
 
+  // Handle logout scenarios
   const handleLogout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("user");

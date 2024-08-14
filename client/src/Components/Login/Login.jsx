@@ -3,12 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../../Services/Service'; // Import the service function
 import './Login.css';
 
+// Login Components  
 const Login = () => {
+  //Storing form login inputs and errors 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
   const navigate = useNavigate();
 
+
+
+  // Function to handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
