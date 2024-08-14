@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
+const { decryptRequest } = require("./Crypto");
+
 
 const JWT_SECRET = process.env.JWT_SECRET;
-const CryptoJS = require("crypto-js");
-const secretKey = "my-secret-key";
-const { decryptRequest } = require("./Crypto");
+
 // Middleware to authenticate JWT token
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -19,7 +19,6 @@ const authenticateToken = (req, res, next) => {
     next();
   });
 };
-
 
 module.exports = {
   authenticateToken,
