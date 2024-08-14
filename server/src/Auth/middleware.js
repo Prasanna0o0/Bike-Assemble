@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { decryptRequest } = require("./Crypto");
 
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET;// HS256
 
 // Middleware to authenticate JWT token
 const authenticateToken = (req, res, next) => {
