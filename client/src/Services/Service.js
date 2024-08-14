@@ -3,7 +3,7 @@ import client from "../Client/Client";
 const handleError = (error, defaultMessage) => {
 
   console.error("API call failed:", error);
-  return { error: error.message || defaultMessage };
+  return { error: error?.message || defaultMessage };
 };
 
 // Function to register a user

@@ -112,14 +112,14 @@ const Signin = () => {
   };
 
   const validateUsername = (username) => {
-    if (!username) return "Username (Email) is required";
+    if (!username) return "Please Enter your (Email)";
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(username)) return "Invalid email format";
     return "";
   };
 
   const validatePassword = (password) => {
-    if (!password) return "Password is required";
+    if (!password) return "Please Enter your Password";
     if (password.length < 6) return "Password must be at least 6 characters long";
     return "";
   };

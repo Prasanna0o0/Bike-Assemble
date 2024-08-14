@@ -28,7 +28,7 @@ const NavBar = () => {
         {token && role ? "" : <Link to="/">Signin</Link>}
         {token && role === "admin" && <Link to="/dashboard">Dashboard</Link>}
         {/* Display the username if available */}
-        <h4>User : {parsedUser?.username}</h4>
+        {parsedUser?.username ? <h4>User : {parsedUser?.username}</h4> : " "}
       </div>
       <div>
         {token ? (
